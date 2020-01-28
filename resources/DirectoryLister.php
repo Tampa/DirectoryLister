@@ -729,7 +729,7 @@ class DirectoryLister {
 
                     if ($this->_directory != '.') {
                         // Get parent directory path
-                        $pathArray = explode('/', $relativePath);
+                        $pathArray = explode('/', rawurlencode($relativePath));
                         unset($pathArray[count($pathArray)-1]);
                         unset($pathArray[count($pathArray)-1]);
                         $directoryPath = implode('/', $pathArray);
@@ -740,8 +740,8 @@ class DirectoryLister {
 
                         // Add file info to the array
                         $directoryArray['..'] = array(
-                            'file_path'  => $this->_appURL . $directoryPath,
-                            'url_path'   => $this->_appURL . $directoryPath,
+                            'file_path'  => $this->_appURL . rawurlencode($directoryPath),
+                            'url_path'   => $this->_appURL . rawurlencode($directoryPath),
                             'file_size'  => '-',
 							'file_downloads' => '-',
                             'mod_time'   => date($this->_config['date_format'], filemtime($realPath)),

@@ -115,7 +115,10 @@
 
 				<?php foreach($dirArray as $name => $fileInfo): ?>
 					<li data-name="<?php echo $name; ?>" data-href="<?php echo $fileInfo['url_path']; ?>">
-						<a href="<?php if(is_dir($fileInfo['file_path'])) { echo '?dir=' . $fileInfo['file_path']; } elseif($fileInfo['icon_class'] == 'fa-level-up') { echo  $fileInfo['file_path']; } else { echo 'index.php?file='.$fileInfo['file_path']; } ?>" class="clearfix" data-name="<?php echo $name; ?>">
+						<a href="<?php if(is_dir($fileInfo['file_path'])) { echo '?dir=' . rawurlencode($fileInfo['file_path']); } 
+elseif($fileInfo['icon_class'] 
+== 'fa-level-up') { echo  rawurlencode($fileInfo['file_path']); } else { echo 'index.php?file='.rawurlencode($fileInfo['file_path']); } ?>" class="clearfix" data-name="<?php echo $name; 
+?>">
 
 							<div class="row">
 								<span class="file-name col-md-7 col-sm-6 col-xs-9">
