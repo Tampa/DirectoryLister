@@ -261,8 +261,8 @@ class DirectoryLister {
 			
 			return $tosortArray;
 		}
-		
 		// Test if there is a parent directory, if so remove first then sort
+		
 		if (isset($directoryArray[".."])){
 			
 			$parent = $directoryArray[".."];
@@ -729,19 +729,19 @@ class DirectoryLister {
 
                     if ($this->_directory != '.') {
                         // Get parent directory path
-                        $pathArray = explode('/', rawurlencode($relativePath));
+                        $pathArray = explode('/', $relativePath);
                         unset($pathArray[count($pathArray)-1]);
                         unset($pathArray[count($pathArray)-1]);
                         $directoryPath = implode('/', $pathArray);
 
                         if (!empty($directoryPath)) {
-                            $directoryPath = '?dir=' . rawurlencode($directoryPath);
+                            $directoryPath = '?dir=' . $directoryPath;
                         }
 
                         // Add file info to the array
                         $directoryArray['..'] = array(
-                            'file_path'  => $this->_appURL . rawurlencode($directoryPath),
-                            'url_path'   => $this->_appURL . rawurlencode($directoryPath),
+                            'file_path'  => $this->_appURL . $directoryPath,
+                            'url_path'   => $this->_appURL . $directoryPath,
                             'file_size'  => '-',
 							'file_downloads' => '-',
                             'mod_time'   => date($this->_config['date_format'], filemtime($realPath)),
