@@ -749,6 +749,8 @@ class DirectoryLister {
                             'sort'       => 0
                         );
                     }
+					
+					// Now actually build the array of folders and files
 
                 } elseif (!$this->_isHidden($relativePath)) {
 
