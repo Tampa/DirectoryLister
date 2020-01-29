@@ -27,6 +27,7 @@
 		} 
 		return fclose($handle); 
 	}
+
 	
 	function getFileExt($fname)
 	{
@@ -64,58 +65,47 @@
 			echo "Invalid File or File Not Specified";
 			exit(0);
 		}
-		else if (in_array(getFileExt($fname), $lister->_config['can_be_open_extension'])) //if file can be opened
-		{
-			require_once($fname); //Open/show it
-			exit(0);
-		}
 		else
 		{
-		
-			// Declare arrays for filename and count
-			$name = array();
-			$count = array();	
 			
-			// Create log file if it does not exist
-			touch("$path/resources/log");
-			// Open log file in read mode
-			$file = fopen("$path/resources/log","r");	
-			// Read the entire contents of the file into the arrays 
-			while ($data = fscanf($file,"%[ -~]\t%d\n")) 
-			{
-				list ($temp1, $temp2) = $data;	
-				array_push($name,$temp1);
-				array_push($count,$temp2);
-			}
-			fclose($file);
+			// Init temporary array to handle data
+			$downloads = array();
 		
-			// If the file entry exists in the log, increment its count	
-			if(in_array($fname,$name))
+			// Check if log file exists, else create it		
+			if (file_exists("$path/resources/log") === false)
 			{
-				$key=array_search($fname,$name);
-				$count[$key]+=1;
-			}
-		
-			// Otherwise, create a new array entry for the file
-			else
-			{
-				array_push($name,$fname);
-				array_push($count,1);
+				touch("$path/resources/log");
 			}
 			
-			// Combine the two arrays into new array with filename as key, and count as value
-			$list=array_combine($name,$count);
-			ksort($list);
-			
-			// Open the file in write mode to clear all its contents	
-			$file=fopen("$path/resources/log","w");	
+			// Now it should exist regardless
+			if (file_exists("$path/resources/log") !== false)
+			{
+				$file = fopen("$path/resources/log","r");	
 				
-			// For each key and value in the list, print to file
-			while (list($key, $val) = each($list))
-			{
-				fprintf($file,"%s\t%d\n",$key,$val);	
+				// Get file contents into array
+				$downloads = unserialize(fread($file,filesize("$path/resources/log")));
+				
+				fclose($file);
+				
+				// Check if the key or filename already is in the array else append it
+				if (array_key_exists($fname, $downloads))
+				{
+					$downloads[$fname] += 1;
+				}
+				else
+				{
+					$downloads[$fname] = 1;
+				}
+				
+				// Now open it to write the data back into there
+				$file = fopen("$path/resources/log","w");	
+								
+				//	And stuff all back into the file			
+				fwrite($file,serialize($downloads));
+				
+				fclose($file);
 			}
-			fclose($file);
+
 		
 			// Initiate force file download
 			// fix for IE catching or PHP bug issue

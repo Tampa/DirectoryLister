@@ -799,28 +799,23 @@ class DirectoryLister {
     }
 
 	// Function to read the log file, and return an array as (filename => downloads)
-	private function _read_log()	{
+	private function _read_log()
+	{
 		// Declare Array for holding data read from log file
-		$name = array(); // array for file name
-		$count = array(); // array for file count
-		$file = @file($this->_logFile);
-		if(empty($file))
-		{
-			return null;
-		}
-		// Read the entire contents of the log file into the arrays
-		$file = fopen($this->_logFile,"r");
-		while ($data = fscanf($file,"%[ -~]\t%d\n"))
-		{
-			list ($temp1, $temp2) = $data;
-			array_push($name,$temp1);
-			array_push($count,$temp2);
-		}
+				
+		$downloads = array();
+		
+		$file = fopen("resources/log","r");	
+			
+		// Get file contents into array
+		$downloads = unserialize(fread($file,filesize("resources/log")));
+			
 		fclose($file);
-		// $file_list contains data read from the log file as an array (filename => count)
-		$file_list=@array_combine($name,$count);
-		ksort($file_list); // Sorting it in alphabetical order of key
-		return $file_list;
+		
+		ksort($downloads); // Sorting it in alphabetical order of key
+		
+		return $downloads;
+		
 	}
 
     /**

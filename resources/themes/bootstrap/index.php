@@ -117,7 +117,7 @@
 					<li data-name="<?php echo $name; ?>" data-href="<?php echo $fileInfo['url_path']; ?>">
 						<a href="<?php if(is_dir($fileInfo['file_path'])) { echo '?dir=' . rawurlencode($fileInfo['file_path']); } 
 elseif($fileInfo['icon_class'] 
-== 'fa-level-up') { echo  $fileInfo['file_path']; } else { echo 'index.php?file='.$fileInfo['file_path']; } ?>" class="clearfix" data-name="<?php echo $name; 
+== 'fa-level-up') { echo  $fileInfo['file_path']; } else { echo 'index.php?file='.rawurlencode($fileInfo['file_path']); } ?>" class="clearfix" data-name="<?php echo $name; 
 ?>">
 
 							<div class="row">
