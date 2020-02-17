@@ -602,6 +602,36 @@ class DirectoryLister {
 			$totaldls = array_sum($dllog);
         return $totaldls;
     }
+	
+	/**
+     * Get total amount of bandwidth transferred.
+     *
+     * @return bandwidth
+     * @access public
+     */	
+	public function getTotalBandwidth() {
+        // Get fresh download count data
+        $dllog = $this->_read_log();
+
+        // Get total download count
+		$totalband = 0;
+		if (is_array($dllog)) //Fix when there is no downloads yet
+		foreach ($dllog as $file => $number)
+		{
+			$totalband += filesize($file) * $number;
+		}
+		
+		// Array of file size suffixes
+        $sizes = array('B', 'KB', 'MB', 'GB', 'TB', 'PB');
+
+        // Calculate file size suffix factor
+        $factor = floor((strlen($totalband) - 1) / 3);
+
+        // Calculate the file size
+        $totalband = sprintf('%.2f', $totalband / pow(1024, $factor)) . $sizes[$factor];
+		
+        return $totalband;
+    }
 
     /**
      * Validates and returns the directory path

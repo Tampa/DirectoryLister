@@ -70,40 +70,65 @@
 			
 			// Init temporary array to handle data
 			$downloads = array();
-		
-			// Check if log file exists, else create it		
-			if (file_exists("$path/resources/log") === false)
-			{
-				touch("$path/resources/log");
-			}
 			
 			// Now it should exist regardless
 			if (file_exists("$path/resources/log") !== false)
 			{
-				$file = fopen("$path/resources/log","r");	
+				$file = fopen("$path/resources/log","r");
 				
 				// Get file contents into array
 				$downloads = unserialize(fread($file,filesize("$path/resources/log")));
 				
 				fclose($file);
 				
-				// Check if the key or filename already is in the array else append it
-				if (array_key_exists($fname, $downloads))
+				if ($downloads != null && $downloads != "" && $downloads != " " && count($downloads) != 0)
 				{
-					$downloads[$fname] += 1;
-				}
-				else
-				{
-					$downloads[$fname] = 1;
-				}
+					// Check if the key or filename already is in the array else append it
+					if (array_key_exists($fname, $downloads))
+					{
+						$downloads[$fname] += 1;
+					}
+					else
+					{
+						$downloads[$fname] = 1;
+					}
+					
+					// Massive debug code to figure out why this constantly overwrites with bad data
+					
+					$debugfile = "$path/resources/log".time();
+					
+					//touch($debugfile);
+					//$file = fopen($debugfile,"w");
+					//fwrite($file,serialize($downloads));
+					//fclose($file);
+					
+					
+					try
+					{
+						$file = fopen("$path/resources/log","w");
+						
+					}
+					catch (Exception $e)
+					{
+						$file = fopen("$path/resources/logerror","w");
+						fwrite($file,$e->getMessage()."\n");
+						fclose($file);
+					}
+					
+					try
+					{
+						fwrite($file,serialize($downloads));
+					}
+					catch (Exception $e)
+					{
+						$file = fopen("$path/resources/logerror","w");
+						fwrite($file,$e->getMessage()."\n");
+						fclose($file);
+					}
+					
+					fclose($file);
 				
-				// Now open it to write the data back into there
-				$file = fopen("$path/resources/log","w");	
-								
-				//	And stuff all back into the file			
-				fwrite($file,serialize($downloads));
-				
-				fclose($file);
+				}
 			}
 
 		
