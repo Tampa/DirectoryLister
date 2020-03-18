@@ -1,11 +1,12 @@
 Directory Lister - The simple PHP directory lister
 ==================================================
-Created by, [Chris Kankiewicz](http://www.ChrisKankiewicz.com)
+Maintained by Tampa
 
-Contributions from Tampa, veso266 & others
+Contributions from veso266 & others
+
+Original idea by, [Chris Kankiewicz](http://www.ChrisKankiewicz.com)
 
 Original fork from mijorepusic
-
 
 Introduction
 ------------
@@ -29,18 +30,21 @@ Features
   * Directory size information
   * File hashing
   * Custom directory descriptions(place .desc file in directory)
-  * Download counter
+  * Download counter, traffic estimator
+  * Dark and light mode
 
 
 Requirements
 ------------
 
-Directory Lister requires PHP 5.3+ to work properly.  For more information on PHP, please visit
-<http://www.php.net>. It is recommended to use latest PHP 7.2+ if possible.
+It is recommended to use latest PHP 7.2+ if possible. For more information on PHP, please visit
+<http://www.php.net>. PHP 7.3 should work as well, PHP 7.4 has not been tested.
 
-A linux/unix host is needed to support all features.
+A linux/unix host is needed to support some features, please report issues with other platforms.
 
 For directory zip functionality zip library needs to be present in /usr/bin/zip
+
+Uses some javascript so may not work with browsers from last century.
 
 
 Installation
@@ -51,6 +55,7 @@ Installation
  3. Place all files in the parent-most directory you wish DirectoryLister to use as home
  4. Rename `default.config.php` to `config.php` and configure DirectoryLister as needed within, (remove `.desc` in main directory to remove welcome message)
  5. Files and folders to be shown can now be placed alongside
+ 6. Make sure log file in `resources` folder is write-able
 
 
 Troubleshooting
@@ -74,4 +79,4 @@ Directory Lister is distributed under the terms of the
 
 Copyright 2017 [Chris Kankiewicz](http://www.chriskankiewicz.com)
 
-Copyright 2019 Tampa
+Copyright 2020 Tampa
