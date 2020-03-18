@@ -16,7 +16,7 @@
 class DirectoryLister {
 
     // Define application version
-    const VERSION = '2.9.0';
+    const VERSION = '2.9.1';
 
     // Reserve some variables
     protected	$_themeName     = null;
@@ -631,6 +631,24 @@ class DirectoryLister {
         $totalband = sprintf('%.2f', $totalband / pow(1024, $factor)) . $sizes[$factor];
 		
         return $totalband;
+    }
+	
+	/**
+     * Get total size of everything.
+     *
+     * @return size
+     * @access public
+     */
+    public function getTotalSize() {
+        
+		// Fetch size of most parent directory		
+		$f = './';
+		$io = popen ( '/usr/bin/du -sk ' . $f, 'r' );
+		$size = fgets ( $io, 4096);
+		$size = substr ( $size, 0, strpos ( $size, "\t" ) );
+		pclose ( $io );
+		$totalsize = formatSizeUnits($size);
+		return $totalsize;
     }
 
     /**
