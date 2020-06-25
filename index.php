@@ -80,55 +80,53 @@
 				$downloads = unserialize(fread($file,filesize("$path/resources/log")));
 				
 				fclose($file);
-				
-				if ($downloads != null && $downloads != "" && $downloads != " " && count($downloads) != 0)
+								
+				// Check if the key or filename already is in the array else append it
+				if (array_key_exists($fname, $downloads))
 				{
-					// Check if the key or filename already is in the array else append it
-					if (array_key_exists($fname, $downloads))
-					{
-						$downloads[$fname] += 1;
-					}
-					else
-					{
-						$downloads[$fname] = 1;
-					}
-					
-					// Massive debug code to figure out why this constantly overwrites with bad data
-					
-					$debugfile = "$path/resources/log".time();
-					
-					//touch($debugfile);
-					//$file = fopen($debugfile,"w");
-					//fwrite($file,serialize($downloads));
-					//fclose($file);
-					
-					
-					try
-					{
-						$file = fopen("$path/resources/log","w");
-						
-					}
-					catch (Exception $e)
-					{
-						$file = fopen("$path/resources/logerror","w");
-						fwrite($file,$e->getMessage()."\n");
-						fclose($file);
-					}
-					
-					try
-					{
-						fwrite($file,serialize($downloads));
-					}
-					catch (Exception $e)
-					{
-						$file = fopen("$path/resources/logerror","w");
-						fwrite($file,$e->getMessage()."\n");
-						fclose($file);
-					}
-					
-					fclose($file);
-				
+					$downloads[$fname] += 1;
 				}
+				else
+				{
+					$downloads[$fname] = 1;
+				}
+				
+				// Massive debug code to figure out why this constantly overwrites with bad data
+				
+				$debugfile = "$path/resources/log".time();
+				
+				//touch($debugfile);
+				//$file = fopen($debugfile,"w");
+				//fwrite($file,serialize($downloads));
+				//fclose($file);
+				
+				
+				try
+				{
+					$file = fopen("$path/resources/log","w");
+					
+				}
+				catch (Exception $e)
+				{
+					$file = fopen("$path/resources/logerror","w");
+					fwrite($file,$e->getMessage()."\n");
+					fclose($file);
+				}
+				
+				try
+				{
+					fwrite($file,serialize($downloads));
+				}
+				catch (Exception $e)
+				{
+					$file = fopen("$path/resources/logerror","w");
+					fwrite($file,$e->getMessage()."\n");
+					fclose($file);
+				}
+				
+				fclose($file);
+				
+				
 			}
 
 		

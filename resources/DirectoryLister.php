@@ -54,6 +54,13 @@ class DirectoryLister {
             die('ERROR: Missing application config file at ' . $configFile);
         }
 		
+		// Remove default config if present
+		$defaultConfig = $this->_appDir . '/default.config.php';
+		
+		if (file_exists($defaultConfig)) {
+            die('ERROR: Please configure the application by renaming default.config.php inside /resources to config.php and configuring the application parameters within!');
+        }
+		
 		// Load the log file
         $log = $this->_appDir . '/log';
 
@@ -65,6 +72,10 @@ class DirectoryLister {
 				$this->setSystemMessage('error', '<b>ERROR:</b> Unable to read log file');
 		} else {
 			touch($log);
+		}
+		
+		if (filesize($log) <= 0) {
+			$this->setSystemMessage('error', '<b>ERROR:</b> Log file empty!');
 		}
 
         // Set the file types array to a global variable
