@@ -16,7 +16,7 @@
 class DirectoryLister {
 
     // Define application version
-    const VERSION = '2.9.1';
+    const VERSION = '2.9.2';
 
     // Reserve some variables
     protected	$_themeName     = null;
@@ -72,6 +72,11 @@ class DirectoryLister {
 				$this->setSystemMessage('error', '<b>ERROR:</b> Unable to read log file');
 		} else {
 			touch($log);
+			if (file_exists($log) && is_writable($log)) {
+				$this->_logFile = $log;
+			} else {
+				$this->setSystemMessage('error', '<b>ERROR:</b> Unable to read/create log file');
+			}
 		}
 		
 		if (filesize($log) <= 0) {
